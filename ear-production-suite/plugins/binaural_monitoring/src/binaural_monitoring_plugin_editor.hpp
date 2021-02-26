@@ -8,7 +8,7 @@
 #include "../../shared/components/overlay.hpp"
 #include "../../shared/components/ear_header.hpp"
 #include "binaural_monitoring_plugin_processor.hpp"
-#include "speaker_meter.hpp"
+#include "headphone_channel_meter.hpp"
 
 class EarMonitoringAudioProcessorEditor
     : public AudioProcessorEditor,
@@ -28,7 +28,7 @@ class EarMonitoringAudioProcessorEditor
   std::unique_ptr<ear::plugin::ui::Overlay> onBoardingOverlay_;
   std::unique_ptr<ear::plugin::ui::Onboarding> onBoardingContent_;
 
-  std::vector<std::unique_ptr<ear::plugin::ui::SpeakerMeter>> speakerMeters_;
+  std::vector<std::unique_ptr<ear::plugin::ui::HeadphoneChannelMeter>> headphoneMeters_;
 
   std::unique_ptr<InterProcessLock> propertiesFileLock_;
   std::unique_ptr<PropertiesFile> propertiesFile_;
