@@ -19,6 +19,7 @@ set_target_properties(
 	ear_logging_server
 	ear-plugin-base
 	direct_speakers_VST3 
+	ear_binaural_monitoring_VST3
 	ear_monitoring_0+2+0_VST3
 	ear_monitoring_0+5+0_VST3
 	ear_monitoring_0+7+0_VST3
