@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(ear-production-combined VERSION 0.6.0.0 LANGUAGES CXX)
+set(CMAKE_CXX_STANDARD 17)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake_modules")
 
 include(eps_set_install_paths)
@@ -15,7 +16,7 @@ find_package(nng REQUIRED)
 add_subdirectory(submodules)
 
 add_subdirectory(ear-production-suite)
-set_target_properties(
+list(APPEND ear_production_suite_vsts
 	ear_logging_server
 	ear-plugin-base
 	direct_speakers_VST3 
@@ -31,9 +32,13 @@ set_target_properties(
 	ear_monitoring_4+9+0_VST3
 	ear_monitoring_9+10+3_VST3
 	object_VST3
-	scene_VST3
-PROPERTIES FOLDER EPS-ear_production_suite_vsts)
-set_target_properties(
+	scene_VST3)
+foreach(tgt ${ear_production_suite_vsts})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-ear_production_suite_vsts)
+	endif()
+endforeach()
+list(APPEND ear_production_suite_vsts-tests
 	connection_id_tests 
 	connection_manager_tests 
 	message_coding_tests 
@@ -47,24 +52,58 @@ set_target_properties(
 	scene_tests
 	test_host_runner
 	test_sender
-	variable_block_adapter_tests
-PROPERTIES FOLDER EPS-ear_production_suite_vsts-tests)
-set_target_properties(
+	variable_block_adapter_tests)
+foreach(tgt ${ear_production_suite_vsts-tests})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-ear_production_suite_vsts-tests)
+	endif()
+endforeach()
+list(APPEND ear_production_suite_vsts-mockups
 	input_plugin_mockup 
 	monitoring_mockup 
-	scene_mockup
-PROPERTIES FOLDER EPS-ear_production_suite_vsts-mockups)
+	scene_mockup)
+foreach(tgt ${ear_production_suite_vsts-mockups})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-ear_production_suite_vsts-mockups)
+	endif()
+endforeach()
 
 add_subdirectory(reaper-adm-extension)
-set_target_properties(reaper_adm reaper_adm_object PROPERTIES FOLDER EPS-reaper_extension)
-set_target_properties(testacceptreaper_adm testreaper_adm PROPERTIES FOLDER EPS-reaper_extension-tests)
+list(APPEND reaper_extension
+	reaper_adm
+	reaper_adm_object)
+foreach(tgt ${reaper_extension})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-reaper_extension)
+	endif()
+endforeach()
+list(APPEND reaper_extension-tests
+	testacceptreaper_adm
+	testreaper_adm)
+foreach(tgt ${reaper_extension-tests})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-reaper_extension-tests)
+	endif()
+endforeach()
 
 add_subdirectory(reaper_adm_stem_plugin)
-set_target_properties(adm_export_source_VST3 PROPERTIES FOLDER EPS-adm_export_source_vst)
+if(TARGET adm_export_source_VST3)
+	set_target_properties(adm_export_source_VST3 PROPERTIES FOLDER EPS-adm_export_source_vst)
+endif()
 
 add_subdirectory(tools)
-set_target_properties(proj_upgrade project_upgrade PROPERTIES FOLDER EPS-tools)
-set_target_properties(test_project_upgrade PROPERTIES FOLDER EPS-tools-tests)
+list(APPEND tools
+	proj_upgrade
+	project_upgrade)
+foreach(tgt ${tools})
+	if(TARGET ${tgt})
+		set_target_properties(${tgt} PROPERTIES FOLDER EPS-tools)
+	endif()
+endforeach()
+if(TARGET test_project_upgrade)
+	set_target_properties(test_project_upgrade PROPERTIES FOLDER EPS-tools-tests)
+endif()
+
 
 list(FILTER HEADERS EXCLUDE REGEX "^\\..+") 
 list(FILTER SOURCES EXCLUDE REGEX "^\\..+")
