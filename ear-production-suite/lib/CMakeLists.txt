@@ -46,6 +46,7 @@ target_sources(ear-plugin-base PRIVATE ${EAR_PROTO_INPUT})
 
 target_link_libraries(ear-plugin-base PUBLIC
   ear
+  bear
   Boost::boost
   protobuf::libprotobuf
   nng::nng
